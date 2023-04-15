@@ -47,7 +47,14 @@ public class AuthenticationService {
                         .build();
         repository.save(user);
         String jwtToken = jwtService.generateToken(user);
-        return (T) AuthenticationResponse.builder().token(jwtToken).build();
+        return (T) AuthenticationResponse.builder()
+                                        .token(jwtToken)
+                                        .username(user.getUsername())
+                                        .firstName(user.getFirstName())
+                                        .lastName(user.getLastName())
+                                        .email(user.getEmail())
+                                        .contactNumber(user.getContactNumber())
+                                        .build();
     }
 
     public AuthenticationResponse login(AuthenticationRequest request) {
@@ -59,7 +66,14 @@ public class AuthenticationService {
         );
         User user = repository.findByUsername(request.getUsername()).orElseThrow();
         String jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder()
+                                    .token(jwtToken)
+                                    .username(user.getUsername())
+                                    .firstName(user.getFirstName())
+                                    .lastName(user.getLastName())
+                                    .email(user.getEmail())
+                                    .contactNumber(user.getContactNumber())
+                                    .build();
     }
 
     public Message resetPassword(String username, Password password) {

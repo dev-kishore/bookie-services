@@ -1,12 +1,16 @@
 package com.movie.booker.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.movie.booker.dto.User;
+import com.movie.booker.dto.UpdateUser;
 import com.movie.booker.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,9 +23,10 @@ public class UserController {
     private final UserService userService;
 
 
-    @GetMapping("/user/{id}")
-    private ResponseEntity<User> getUser(@PathVariable String id) {
-        return ResponseEntity.ok(userService.getUser(id));
+    @PutMapping("/user/{username}/update")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUser user,
+                                        @NonNull @PathVariable("username") String username) {
+        return ResponseEntity.ok(userService.updateUser(user, username));
     }
 
 }
