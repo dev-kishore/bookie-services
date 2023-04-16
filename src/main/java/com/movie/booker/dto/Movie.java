@@ -1,5 +1,7 @@
 package com.movie.booker.dto;
 
+import java.util.List;
+
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,6 +30,8 @@ public class Movie {
     private String releaseDate;
     private String viewType;
     private String location;
-    private String theatreName; 
+    private List<List<String>> theatres; 
+    private String ticketStatus;
+    private Integer tickets;
 
 }

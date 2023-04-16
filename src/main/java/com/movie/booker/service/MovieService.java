@@ -1,7 +1,9 @@
 package com.movie.booker.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.movie.booker.dto.Message;
 import com.movie.booker.dto.Movie;
+import com.movie.booker.dto.Ticket;
 import com.movie.booker.repository.MovieRepository;
+import com.movie.booker.repository.TicketRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +33,13 @@ public class MovieService {
 
     private final MongoTemplate mongoTemplate;
 
+    private final TicketRepository ticketRepository;
+
     public Message addMovie(Movie movieDetails, MultipartFile file) throws IOException {
+        Integer tickets = 0;
+        for(List<String> theatre : movieDetails.getTheatres()) {
+            tickets = tickets + Integer.parseInt(theatre.get(1));
+        }
         Movie movie = Movie.builder()
                             .title(movieDetails.getTitle())
                             .description(movieDetails.getDescription())
@@ -41,7 +51,9 @@ public class MovieService {
                             .releaseDate(movieDetails.getReleaseDate())
                             .viewType(movieDetails.getViewType())
                             .location(movieDetails.getLocation())
-                            .theatreName(movieDetails.getTheatreName())
+                            .theatres(movieDetails.getTheatres())
+                            .ticketStatus("TO BE SOLD")
+                            .tickets(tickets)
                             .build();
         repository.save(movie);
         return Message.builder().message("Movie added successfully!").build();
@@ -60,6 +72,56 @@ public class MovieService {
     public List<Movie> getMovies(int page, int size) {
         final Pageable paging = PageRequest.of(page, size);
         return mongoTemplate.find(new Query().with(paging), Movie.class);
+    }
+
+    public Message deleteMovie(String id) {
+        repository.deleteById(id);
+        return Message.builder().message("Movie deleted successfully!").build();
+    }
+
+    public Message updateMovieStatus(String id, Integer warnLimit) {
+        Optional<Movie> movieFromDB = repository.findById(id);
+        if(!movieFromDB.isPresent()) {
+            return Message.builder().message("Movie not found with movie id " + id).build();
+        }
+        movieFromDB.ifPresent(movie -> {
+            if(movie.getTickets() < warnLimit) {
+                movie.setTicketStatus("BOOK ASAP");
+            } else if (movie.getTickets() == 0) {
+                movie.setTicketStatus("SOLD OUT");
+            }
+            repository.save(movie);
+        });
+        return Message.builder().message("Movie status updated successfully!").build();
+    }
+
+    public Message bookTicket(Ticket ticketDetails) {
+        List<List<String>> theatres = new ArrayList<>();
+        Optional<Movie> movieFromDBOptional = repository.findById(ticketDetails.getMovieId());
+        if(!movieFromDBOptional.isPresent()) {
+            return Message.builder().message("Movie not found with movie id " + ticketDetails.getMovieId()).build();
+        }
+        Movie movieFromDB = movieFromDBOptional.get();
+        Ticket ticket = Ticket.builder()
+                                .movieId(movieFromDB.getId())
+                                .username(ticketDetails.getUsername())
+                                .title(movieFromDB.getTitle())
+                                .theatreName(ticketDetails.getTheatreName())
+                                .numberOfTickets(ticketDetails.getNumberOfTickets())
+                                .seatNumbers(ticketDetails.getSeatNumbers())
+                                .build();
+        ticketRepository.save(ticket);
+        movieFromDB.setTickets(movieFromDB.getTickets() - ticketDetails.getNumberOfTickets());
+        for(List<String> theatre : movieFromDB.getTheatres()) {
+            if(theatre.get(0).equalsIgnoreCase(ticketDetails.getTheatreName())) {
+                String availableTickets = String.valueOf(Integer.parseInt(theatre.get(1)) - ticketDetails.getNumberOfTickets());
+                theatre.set(1, availableTickets);
+            }
+            theatres.add(theatre);
+        }
+        movieFromDB.setTheatres(theatres);
+        repository.save(movieFromDB);
+        return Message.builder().message("Tickets booked successfully!").build();
     }
     
 }
