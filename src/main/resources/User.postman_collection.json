@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "0d52fe13-21c9-47ed-b38e-ace2ae782381",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Zayn\",\r\n    \"lastName\": \"Malik\",\r\n    \"username\": \"zayn\",\r\n    \"password\": \"1234\",\r\n    \"email\": \"zayn@example.com\",\r\n    \"contactNumber\": \"1234567890\",\r\n    \"role\": \"user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1.0/moviebooking/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1.0",
+						"moviebooking",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"zayn\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1.0/moviebooking/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1.0",
+						"moviebooking",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book Tickets",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"zayn\",\r\n    \"movieId\": \"643bbed752d5bb18169962fa\",\r\n    \"theatreName\": \"Cinemass\",\r\n    \"numberOfTickets\": 5,\r\n    \"seatNumbers\": [1,2,3,4,5]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1.0/moviebooking/user/movie/ticket/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1.0",
+						"moviebooking",
+						"user",
+						"movie",
+						"ticket",
+						"book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1.0/moviebooking/auth/zayn/forgot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1.0",
+						"moviebooking",
+						"auth",
+						"zayn",
+						"forgot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6YXluIiwiZXhwIjoxNjgxNTgzMjg1LCJpYXQiOjE2ODE1ODE4NDV9.oA4uSef8EQ3Bd2Is_Q9EPKTe3-7vvsPuDSltIm9rnyI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Zayn\",\r\n    \"lastName\": \"Malik\",\r\n    \"email\": \"zayn@mail.com\",\r\n    \"contactNumber\": \"0123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1.0/moviebooking/user/zayn/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1.0",
+						"moviebooking",
+						"user",
+						"zayn",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Movie",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1.0/moviebooking/user/movie/get?query=movie",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1.0",
+						"moviebooking",
+						"user",
+						"movie",
+						"get"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "movie"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Movie Search Suggestions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1.0/moviebooking/user/movie/search?query=movie",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1.0",
+						"moviebooking",
+						"user",
+						"movie",
+						"search"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "movie"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/v1.0/moviebooking/user/movies/get?page=0&size=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1.0",
+						"moviebooking",
+						"user",
+						"movies",
+						"get"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
