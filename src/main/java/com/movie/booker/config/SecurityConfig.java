@@ -22,7 +22,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(requests -> requests.antMatchers("/api/v1.0/moviebooking/auth/**") .permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(requests -> requests.antMatchers("/api/v1.0/moviebooking/auth/**","/api/v1.0/moviebooking/admin/**", "/api/v1.0/moviebooking/user/**") .permitAll().anyRequest().authenticated())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

@@ -2,8 +2,6 @@ package com.movie.booker.service;
 
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Service;
 
 import com.movie.booker.dto.Message;
@@ -19,11 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User getUser(String id) {
-        return userRepository.findByUsername(id).get();
-    }
-
-    public <T> T updateUser(@Valid UpdateUser userDetails, String username) {
+    public <T> T updateUser(UpdateUser userDetails, String username) {
         Optional<User> userFromDB = userRepository.findByUsername(username);
         if(!userFromDB.isPresent()) {
             return (T) Message.builder().message("Can't find user by email to update!").build();
