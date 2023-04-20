@@ -50,10 +50,6 @@ public class AuthenticationService {
         return (T) AuthenticationResponse.builder()
                                         .token(jwtToken)
                                         .username(user.getUsername())
-                                        .firstName(user.getFirstName())
-                                        .lastName(user.getLastName())
-                                        .email(user.getEmail())
-                                        .contactNumber(user.getContactNumber())
                                         .build();
     }
 
@@ -69,10 +65,6 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                                     .token(jwtToken)
                                     .username(user.getUsername())
-                                    .firstName(user.getFirstName())
-                                    .lastName(user.getLastName())
-                                    .email(user.getEmail())
-                                    .contactNumber(user.getContactNumber())
                                     .build();
     }
 

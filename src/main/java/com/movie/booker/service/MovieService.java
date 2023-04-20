@@ -108,9 +108,7 @@ public class MovieService {
                                 .title(movieFromDB.getTitle())
                                 .theatreName(ticketDetails.getTheatreName())
                                 .numberOfTickets(ticketDetails.getNumberOfTickets())
-                                .seatNumbers(ticketDetails.getSeatNumbers())
                                 .build();
-        ticketRepository.save(ticket);
         movieFromDB.setTickets(movieFromDB.getTickets() - ticketDetails.getNumberOfTickets());
         for(List<String> theatre : movieFromDB.getTheatres()) {
             if(theatre.get(0).equalsIgnoreCase(ticketDetails.getTheatreName())) {
@@ -121,6 +119,7 @@ public class MovieService {
         }
         movieFromDB.setTheatres(theatres);
         repository.save(movieFromDB);
+        ticketRepository.save(ticket);
         return Message.builder().message("Tickets booked successfully!").build();
     }
     
