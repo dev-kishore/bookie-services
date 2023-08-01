@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,11 +33,6 @@ public class AdminController {
     @DeleteMapping("/movie/delete/{id}")
     public ResponseEntity<Message> deleteMovie(@PathVariable("id") String id) {
         return ResponseEntity.ok(movieService.deleteMovie(id));
-    }
-
-    @PutMapping("movie/{id}/status/update")
-    public ResponseEntity<Message> updateMovieStatus(@PathVariable("id") String id, @RequestParam("limit") String limit) {
-        return ResponseEntity.ok(movieService.updateMovieStatus(id, limit == null ? 10 : Integer.parseInt(limit)));
     }
 
 }
