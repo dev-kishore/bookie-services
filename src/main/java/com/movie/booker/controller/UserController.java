@@ -19,7 +19,7 @@ import com.movie.booker.service.MovieService;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("api/v1.0/moviebooking/user")
 @RequiredArgsConstructor
@@ -42,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok(movieService.getMovies(page, size));
     }
 
-    @PostMapping("movie/ticket/book")
+    @PostMapping("ticket/book")
     public ResponseEntity<Message> bookTicket(@RequestBody Ticket ticket) {
         return ResponseEntity.ok(movieService.bookTicket(ticket));
     }

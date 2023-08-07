@@ -1,15 +1,47 @@
-{
-    "title": "Oppenheimer",
-    "description": "The film is based on the Pulitzer Prize-winning book American Prometheus: The Triumph and Tragedy of J. Robert Oppenheimer by Kai Bird and the late Martin J. Sherwin.",
-    "duration": "3h 10m",
-    "genre": "Biography, Drama, Historical",
-    "movieRating": "UA",
-    "language": "English, Hindi, Tamil",
-    "releaseDate": "7 Apr, 2023",
-    "viewType": "2D, ICE 3D, MX4D 3D, 4DX 3D, IMAX 3D, 3D",
-    "location": "Chennai",
-    "theatres": [
-        ["Cinemass", "75"],
-        ["Cinemax", "100"]
-    ]
-}
+[
+    {
+        "title": "Oppenheimer",
+        "description": "The film is based on the Pulitzer Prize-winning book American Prometheus: The Triumph and Tragedy of J. Robert Oppenheimer by Kai Bird and the late Martin J. Sherwin.",
+        "duration": "3h 10m",
+        "genre": "Biography, Drama, Historical",
+        "movieRating": "UA",
+        "language": "English, Hindi, Tamil",
+        "releaseDate": "7 Apr, 2023",
+        "viewType": "2D, ICE 3D, MX4D 3D, 4DX 3D, IMAX 3D, 3D",
+        "location": "Chennai",
+        "theatres": [
+            ["Cinemass", "75"],
+            ["Cinemax", "100"]
+        ]
+    },
+    {
+        "title": "Meg 2: The Trench",
+        "description": "Dive into uncharted waters with Jason Statham and global action icon Wu Jing as they lead a daring research team on an exploratory dive into the deepest depths of the ocean. Pitted against colossal Megs and relentless environmental plunderers, our heroes must outrun, outsmart, and outswim their merciless predators in a pulse-pounding race against time.",
+        "duration": "1h 56m",
+        "genre": "Action, Adventure, Sci-Fi",
+        "movieRating": "UA",
+        "language": "English, Hindi, Tamil",
+        "releaseDate": "3 Aug, 2023",
+        "viewType": "2D, ICE 3D, MX4D 3D, 4DX 3D, IMAX 3D, 3D",
+        "location": "Chennai",
+        "theatres": [
+            ["Cinemass", "75"],
+            ["Cinemax", "100"]
+        ]
+    },
+    {
+        "title": "Mission Impossible: Dead Reckoning - Part One",
+        "description": "In Mission: Impossible - Dead Reckoning Part One, Ethan Hunt (Tom Cruise) and his IMF team embark on their most dangerous mission yet: To track down a terrifying new weapon that threatens all of humanity before it falls into the wrong hands. With control of the future and the fate of the world at stake, and dark forces from Ethan`s past closing in, a deadly race around the globe begins. Confronted by a mysterious, all-powerful enemy, Ethan is forced to consider that nothing can matter more than his mission - not even the lives of those he cares about most.",
+        "duration": "2h 45m",
+        "genre": "Action, Adventure, Thriller",
+        "movieRating": "UA",
+        "language": "English, Hindi, Tamil",
+        "releaseDate": "12 Jul, 2023",
+        "viewType": "2D, ICE 3D, MX4D 3D, 4DX 3D, IMAX 3D, 3D",
+        "location": "Chennai",
+        "theatres": [
+            ["Cinemass", "75"],
+            ["Cinemax", "100"]
+        ]
+    }
+]

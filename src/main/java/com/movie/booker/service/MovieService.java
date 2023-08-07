@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 import com.movie.booker.dto.Message;
 import com.movie.booker.dto.Movie;
+import com.movie.booker.dto.MovieRequest;
 import com.movie.booker.dto.Ticket;
 import com.movie.booker.repository.MovieRepository;
 import com.movie.booker.repository.TicketRepository;
@@ -39,26 +40,26 @@ public class MovieService {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public Message addMovie(Movie movieDetails, MultipartFile file) throws IOException {
+    public Message addMovie(MovieRequest movieDetails, MultipartFile file) throws IOException {
         Integer tickets = 0;
-        for(List<String> theatre : movieDetails.getTheatres()) {
+        for (List<String> theatre : movieDetails.getTheatres()) {
             tickets = tickets + Integer.parseInt(theatre.get(1));
         }
         Movie movie = Movie.builder()
-                            .title(movieDetails.getTitle())
-                            .description(movieDetails.getDescription())
-                            .photo(new Binary(BsonBinarySubType.BINARY, file.getBytes()))
-                            .duration(movieDetails.getDuration())
-                            .genre(movieDetails.getGenre())
-                            .movieRating(movieDetails.getMovieRating())
-                            .language(movieDetails.getLanguage())
-                            .releaseDate(movieDetails.getReleaseDate())
-                            .viewType(movieDetails.getViewType())
-                            .location(movieDetails.getLocation())
-                            .theatres(movieDetails.getTheatres())
-                            .ticketStatus("TO BE SOLD")
-                            .tickets(tickets)
-                            .build();
+                .title(movieDetails.getTitle())
+                .description(movieDetails.getDescription())
+                .photo(new Binary(BsonBinarySubType.BINARY, file.getBytes()))
+                .duration(movieDetails.getDuration())
+                .genre(movieDetails.getGenre())
+                .movieRating(movieDetails.getMovieRating())
+                .language(movieDetails.getLanguage())
+                .releaseDate(movieDetails.getReleaseDate())
+                .viewType(movieDetails.getViewType())
+                .location(movieDetails.getLocation())
+                .theatres(movieDetails.getTheatres())
+                .ticketStatus("TO BE SOLD")
+                .tickets(tickets)
+                .build();
         repository.save(movie);
         return Message.builder().message("Movie added successfully!").build();
     }
@@ -86,11 +87,11 @@ public class MovieService {
     public void updateMovieStatus(String id, Integer warnLimit) {
         Optional<Movie> movieFromDB = repository.findById(id);
         movieFromDB.ifPresent(movie -> {
-            if(movie.getTickets() < warnLimit) {
-                movie.setTicketStatus("BOOK ASAP");
-                repository.save(movie);
-            } else if (movie.getTickets() == 0) {
+            if (movie.getTickets() == 0) {
                 movie.setTicketStatus("SOLD OUT");
+                repository.save(movie);
+            } else if (movie.getTickets() < warnLimit) {
+                movie.setTicketStatus("BOOK ASAP");
                 repository.save(movie);
             }
         });
@@ -99,21 +100,22 @@ public class MovieService {
     public Message bookTicket(Ticket ticketDetails) {
         List<List<String>> theatres = new ArrayList<>();
         Optional<Movie> movieFromDBOptional = repository.findById(ticketDetails.getMovieId());
-        if(!movieFromDBOptional.isPresent()) {
+        if (!movieFromDBOptional.isPresent()) {
             return Message.builder().message("Movie not found with movie id " + ticketDetails.getMovieId()).build();
         }
         Movie movieFromDB = movieFromDBOptional.get();
         Ticket ticket = Ticket.builder()
-                                .movieId(movieFromDB.getId())
-                                .username(ticketDetails.getUsername())
-                                .title(movieFromDB.getTitle())
-                                .theatreName(ticketDetails.getTheatreName())
-                                .numberOfTickets(ticketDetails.getNumberOfTickets())
-                                .build();
+                .movieId(movieFromDB.getId())
+                .username(ticketDetails.getUsername())
+                .title(movieFromDB.getTitle())
+                .theatreName(ticketDetails.getTheatreName())
+                .numberOfTickets(ticketDetails.getNumberOfTickets())
+                .build();
         movieFromDB.setTickets(movieFromDB.getTickets() - ticketDetails.getNumberOfTickets());
-        for(List<String> theatre : movieFromDB.getTheatres()) {
-            if(theatre.get(0).equalsIgnoreCase(ticketDetails.getTheatreName())) {
-                String availableTickets = String.valueOf(Integer.parseInt(theatre.get(1)) - ticketDetails.getNumberOfTickets());
+        for (List<String> theatre : movieFromDB.getTheatres()) {
+            if (theatre.get(0).equalsIgnoreCase(ticketDetails.getTheatreName())) {
+                String availableTickets = String
+                        .valueOf(Integer.parseInt(theatre.get(1)) - ticketDetails.getNumberOfTickets());
                 theatre.set(1, availableTickets);
             }
             theatres.add(theatre);
@@ -124,5 +126,5 @@ public class MovieService {
         kafkaTemplate.send("bookie-events", new Gson().toJson(ticket));
         return Message.builder().message("Tickets booked successfully!").build();
     }
-    
+
 }

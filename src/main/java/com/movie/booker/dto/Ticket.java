@@ -1,7 +1,5 @@
 package com.movie.booker.dto;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -23,5 +21,4 @@ public class Ticket {
     private String title;
     private String theatreName;
     private Integer numberOfTickets;
-    private List<Integer> seatNumbers;
 }
