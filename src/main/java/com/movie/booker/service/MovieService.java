@@ -14,11 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.kafka.core.KafkaTemplate;
+// import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
+// import com.google.gson.Gson;
 import com.movie.booker.dto.Message;
 import com.movie.booker.dto.Movie;
 import com.movie.booker.dto.MovieRequest;
@@ -27,9 +27,11 @@ import com.movie.booker.repository.MovieRepository;
 import com.movie.booker.repository.TicketRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class MovieService {
 
     private final MovieRepository repository;
@@ -38,7 +40,7 @@ public class MovieService {
 
     private final TicketRepository ticketRepository;
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    // private final KafkaTemplate<String, String> kafkaTemplate;
 
     public Message addMovie(MovieRequest movieDetails, MultipartFile file) throws IOException {
         Integer tickets = 0;
@@ -61,6 +63,7 @@ public class MovieService {
                 .tickets(tickets)
                 .build();
         repository.save(movie);
+        log.info("Movie added with title: {}", movie.getTitle());
         return Message.builder().message("Movie added successfully!").build();
     }
 
@@ -81,6 +84,7 @@ public class MovieService {
 
     public Message deleteMovie(String id) {
         repository.deleteById(id);
+        log.info("Movie deleted with id: {}", id);
         return Message.builder().message("Movie deleted successfully!").build();
     }
 
@@ -123,7 +127,8 @@ public class MovieService {
         movieFromDB.setTheatres(theatres);
         repository.save(movieFromDB);
         ticketRepository.save(ticket);
-        kafkaTemplate.send("bookie-events", new Gson().toJson(ticket));
+        // kafkaTemplate.send("bookie-events", new Gson().toJson(ticket));
+        updateMovieStatus(ticket.getId(), 10);
         return Message.builder().message("Tickets booked successfully!").build();
     }
 

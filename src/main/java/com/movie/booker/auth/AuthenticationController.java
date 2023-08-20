@@ -17,7 +17,7 @@ import com.movie.booker.dto.Password;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://bookie-angular-app.s3-website-us-east-1.amazonaws.com")
 @RestController
 @RequestMapping("/api/v1.0/moviebooking/auth")
 @RequiredArgsConstructor
